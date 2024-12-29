@@ -19,4 +19,4 @@ COPY run.sh ./run.sh
 RUN chmod a+x /run.sh
 
 # Set the start command
-CMD ["python", "src/main.py"]
+CMD ["python3", "src/main.py"]
