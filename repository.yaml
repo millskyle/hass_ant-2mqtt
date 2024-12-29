@@ -1,4 +1,3 @@
-# https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
-name: Example Home Assistant add-on repository
-url: 'https://github.com/home-assistant/addons-example'
-maintainer: Awesome Maintainer <awesome@example.com>
+name: Add-on for listening for ANT+ fitness devices and forwarding to MQTT broker for Home Assistant
+url: 'https://github.com/millskyle/hass_ant-2mqtt'
+maintainer: Kyle Mills <ky.m.guy@gmail.com>
