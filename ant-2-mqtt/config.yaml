@@ -13,4 +13,3 @@ arch:
 init: false
 map:
   - share:rw
-image: "ghcr.io/home-assistant/{arch}-addon-example"
