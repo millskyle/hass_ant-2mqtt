@@ -6,8 +6,7 @@ FROM $BUILD_FROM
 RUN apk add --no-cache python3 py3-pip 
 RUN apk add --no-cache libusb
 
-RUN rm /usr/lib/python*/EXTERNALLY-MANAGED && \
-    python3 -m ensurepip && \
+RUN python3 -m ensurepip && \
     pip3 install openant paho-mqtt
 
 
