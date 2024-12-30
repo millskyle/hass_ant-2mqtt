@@ -179,7 +179,7 @@ if __name__ == "__main__":
 
 
         client.on_connect = lambda x: print("MQTT Connected")
-        client.username_pw_set(username=config["mqtt_username"], password=config["mqtt_password"])
+        client.username_pw_set(username=config["mqtt_user"], password=config["mqtt_password"])
         
         client.connect(broker, port, 60)
         # Start the loop in a separate thread to handle communication
