@@ -11,6 +11,9 @@ from openant.devices.power_meter import PowerMeter, PowerData
 from openant.devices.bike_speed_cadence import BikeSpeed, BikeCadence, BikeSpeedData, BikeCadenceData
 from openant.devices.heart_rate import HeartRate, HeartRateData
 from openant.easy.channel import Channel
+import paho.mqtt.client as mqtt
+from paho.mqtt.client import CallbackAPIVersion
+import ssl
 import json
 import time
 
@@ -155,14 +158,9 @@ def main(mqtt_client):
         node.stop()
 
 
-def on_mqtt_connect(*args):
-    print("Connected to MQTT")
+
 
 if __name__ == "__main__":
-    import paho.mqtt.client as mqtt
-    from paho.mqtt.client import CallbackAPIVersion
-    import ssl
-    import json
 
     #read config from /data/options.json
     with open("/data/options.json") as f:
@@ -180,6 +178,10 @@ if __name__ == "__main__":
 
 #        client.tls_insecure_set(True)
 #)  # <--- even without arguments
+
+        def on_mqtt_connect(*args):
+            print("Connected to MQTT")
+            mqtt_client.publish(discovery_topic, json.dumps(config_payload), retain=False)
 
 
         client.on_connect = on_mqtt_connect
