@@ -131,12 +131,18 @@ def main(mqtt_client):
                 return
             for datafield in d.topics:
                 logging.info(f"-> Device {type(d)} should have datafield: {datafield}")
-                if hasattr(data, datafield):
-                    logging.info(f"--> Data field {datafield} found in data")
-                    mqtt_client.publish(d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
-                    #logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
-                else:
-                    logging.info(f"Data field {datafield} not found in data")
+                try:
+                    value = d.topics[datafield]["data_mapping_fn"](data)
+                    mqtt_client.publish(d.topics[datafield]["topic"], value)
+                except:
+                    pass
+
+                #if hasattr(data, datafield):
+                #    logging.info(f"--> Data field {datafield} found in data")
+                #    
+                #    #logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
+                #else:
+                #    logging.info(f"--> Data field {datafield} *not* found in data")
 
         d.on_device_data = on_device_data
         RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
