@@ -158,11 +158,16 @@ if __name__ == "__main__":
     import paho.mqtt.client as mqtt
     from paho.mqtt.client import CallbackAPIVersion
     import ssl
+    import json
+
+    #read config from /data/options.json
+    with open("/data/options.json") as f:
+        config = json.load(f)
 
     # Define the MQTT broker details
-    broker = "localhost"  # Replace with your broker's address
-    port = 1883  # Default MQTT port
-    client_id = "bike_trainer"
+    broker = config["mqtt_broker"] # Replace with your broker's address
+    port = config["mqtt_port"]  # Default MQTT port
+    client_id = "ant2mqtt"
     
     try:
         client = mqtt.Client(client_id=client_id, callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
@@ -174,7 +179,7 @@ if __name__ == "__main__":
 
 
         client.on_connect = lambda x: print("MQTT Connected")
-        client.username_pw_set(username="mqtt", password="chuckle1")
+        client.username_pw_set(username=config["mqtt_username"], password=config["mqtt_password"])
         
         client.connect(broker, port, 60)
         # Start the loop in a separate thread to handle communication

@@ -14,5 +14,13 @@ arch:
 init: false
 map:
   - share:rw
-#devices: 
-#  - /dev/bus/usb:/dev/bus/usb:rwm
+options:
+  - mqtt_broker: "127.0.0.1"
+  - mqtt_port: 1883
+  - mqtt_user: "mqtt"
+  - mqtt_pass: "chuckle1"
+schema:
+  - mqtt_broker: str
+  - mqtt_port: int
+  - mqtt_user: str
+  - mqtt_pass: str
