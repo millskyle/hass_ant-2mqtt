@@ -16,6 +16,7 @@ from paho.mqtt.client import CallbackAPIVersion
 import ssl
 import json
 import time
+import logging
 
 def human_name(name):
     return name.replace("_", " ").capitalize()
@@ -124,8 +125,8 @@ def main(mqtt_client):
     devices.append(HeartRate(node))
 
     def on_found(device):
-        print("Found device: ", device)
-        print(" --> About to send autodiscovery")
+        logging.info("Found device: ", device)
+        logging.info(" --> About to send autodiscovery")
         autodiscover_device(device, mqtt_client)
         
     for d in devices:
@@ -133,25 +134,25 @@ def main(mqtt_client):
         d.on_found = lambda d=d: on_found(d)
         
         def on_device_data(page: int, page_name: str, data, d=d):
-            print("on_device_data: device=", d, "data: ", type(data))
+            logging.info("on_device_data: device=", d, "data: ", type(data))
             if not(hasattr(d, 'topics')):
-                print(f"Device {d} has not been discovered yet we have data. Skipping.")
+                logging.info(f"Device {d} has not been discovered yet we have data. Skipping.")
                 return
             for datafield in d.topics:
                 if hasattr(data, datafield):
                     mqtt_client.publish(d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
-                    print("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
+                    logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
                 else:
-                    print(f"Data field {datafield} not found in data")
+                    logging.info(f"Data field {datafield} not found in data")
 
         d.on_device_data = on_device_data
         d.open_channel(channel_type=RX_MODE)
     
     try:
-        print(f"Starting {devices}, press Ctrl-C to finish")
+        logging.info(f"Starting {devices}, press Ctrl-C to finish")
         node.start()
     except KeyboardInterrupt:
-        print("Closing ANT+ device...")
+        logging.info("Closing ANT+ device...")
     finally:
         for d in devices:
             d.close_channel()
@@ -161,12 +162,12 @@ def main(mqtt_client):
 
 
 if __name__ == "__main__":
-    print("Starting")
+    logging.info("Starting")
     #read config from /data/options.json
     with open("/data/options.json") as f:
         config = json.load(f)
 
-    print("Done reading options from config")
+    logging.info("Done reading options from config")
 
     # Define the MQTT broker details
     broker = config["mqtt_broker"] # Replace with your broker's address
@@ -174,7 +175,7 @@ if __name__ == "__main__":
     client_id = "ant2mqtt"
     
 
-    print("About to connect to MQTT broker @ ", broker, "on port ", port, "with client_id ", client_id)
+    logging.info("About to connect to MQTT broker @ ", broker, "on port ", port, "with client_id ", client_id)
     try:
         client = mqtt.Client(client_id=client_id, callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
 
@@ -184,7 +185,7 @@ if __name__ == "__main__":
 #)  # <--- even without arguments
 
         def on_mqtt_connect(*args):
-            print("Connected to MQTT")
+            logging.info("Connected to MQTT")
             client.publish('ant2mqtt/connected', 1)
 
 
@@ -194,7 +195,7 @@ if __name__ == "__main__":
         client.connect(broker, port, 60)
         # Start the loop in a separate thread to handle communication
         client.loop_start()    
-        print("Connected to MQTT broker. About to start main loop") 
+        logging.info("Connected to MQTT broker. About to start main loop") 
         main(client)
     except Exception as e:
         raise e
