@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: ANT-2-MQTT
-version: "1.4.10"
+version: "1.4.11"
 slug: ant-2-mqtt
 description: Receive ANT+ fitness tracker messages and send them to MQTT for homeassistant ingestion
 url: "https://github.com/millskyle/hass_ant-2mqtt"
@@ -15,10 +15,10 @@ init: false
 map:
   - share:rw
 options:
-  mqtt_broker: "127.0.0.1"
+  mqtt_broker: "localhost"
   mqtt_port: 1883
   mqtt_user: "mqtt"
-  mqtt_password: "chuckle1"
+  mqtt_password: "mqtt"
 schema:
   mqtt_broker: str
   mqtt_port: int
