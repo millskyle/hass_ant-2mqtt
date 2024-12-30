@@ -15,7 +15,7 @@ import paho.mqtt.client as mqtt
 from paho.mqtt.client import CallbackAPIVersion
 import json
 import logging
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 
 def human_name(name):
     return name.replace("_", " ").capitalize()
@@ -110,7 +110,7 @@ def calculate_cadence(self):
 RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
 
 def main(mqtt_client):
-
+    
     node = Node()
     node.set_network_key(0x00, ANTPLUS_NETWORK_KEY)
     devices = []
@@ -147,6 +147,7 @@ def main(mqtt_client):
     
     try:
         logging.info(f"Starting {devices}, press Ctrl-C to finish")
+        mqtt_client.publish('ant2mqtt/starting_ant_node', 1)
         node.start()
         logging.info("Started")
     except KeyboardInterrupt:
