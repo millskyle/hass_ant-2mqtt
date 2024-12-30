@@ -42,7 +42,7 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
                           device_model="unknown", device_manufacturer="unknown",
                           device_class=None, data_mapping_fn=None):
     discovery_topic = f"homeassistant/sensor/ant_{device_name}/{device_id}/config"
-    
+    logging.info(f"Publishing autodiscovery topic for {device_name} {data_field} to {discovery_topic}") 
     if data_mapping_fn is None:
         #If no custom mapping function, just look up the data field
         data_mapping_fn = lambda data: getattr(data, data_field)
@@ -126,7 +126,9 @@ def main(mqtt_client):
                 #logging.info(f"Device {d} has not been discovered yet we have data. Skipping.")
                 return
             for datafield in d.topics:
+                logging.info(f"-> Device {type(d)} should have datafield: {datafield}")
                 if hasattr(data, datafield):
+                    logging.info(f"--> Data field {datafield} found in data")
                     mqtt_client.publish(d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
                     #logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
                 else:
