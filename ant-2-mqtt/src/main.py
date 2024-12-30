@@ -123,14 +123,14 @@ def main(mqtt_client):
         def on_device_data(page: int, page_name: str, data, d=d):
             logging.info("on_device_data: device=", d, "data: ", type(data))
             if not(hasattr(d, 'topics')):
-                logging.info(f"Device {d} has not been discovered yet we have data. Skipping.")
+                #logging.info(f"Device {d} has not been discovered yet we have data. Skipping.")
                 return
             for datafield in d.topics:
                 if hasattr(data, datafield):
                     mqtt_client.publish(d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
-                    logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
+                    #logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
                 else:
-                    logging.info(f"Data field {datafield} not found in data")
+                    #logging.info(f"Data field {datafield} not found in data")
 
         d.on_device_data = on_device_data
         RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
