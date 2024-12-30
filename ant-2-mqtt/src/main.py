@@ -73,15 +73,6 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
     mqtt_client.publish(discovery_topic, json.dumps(config_payload), retain=False)
     return device_topic_dict
 
-#def autodiscovery_all(mqtt_client, userdata, flags, reason_code, properties):
-#    publish_autodiscovery(mqtt_client, "power", "W")
-#    publish_autodiscovery(mqtt_client, "power_cadence", "rpm")
-#    publish_autodiscovery(mqtt_client, "speed", "km/h")
-#    publish_autodiscovery(mqtt_client, "cadence", "rpm")
-#    publish_autodiscovery(mqtt_client, "heart_rate", "bpm")
-#    print("Autodiscovery sent")
-#    time.sleep(10)
-
 
 def calculate_speed(self, wheel_circumference_m=2.180):
     delta_rev_count = (
@@ -144,6 +135,7 @@ def main(mqtt_client):
         d.on_device_data = on_device_data
         RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
         d.open_channel(extended=False, channel_type=RX_MODE)
+        d.channel.set_search_timeout(60)
     
     try:
         logging.info(f"Starting {devices}, press Ctrl-C to finish")
