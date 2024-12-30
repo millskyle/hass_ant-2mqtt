@@ -15,7 +15,7 @@ import paho.mqtt.client as mqtt
 from paho.mqtt.client import CallbackAPIVersion
 import json
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 def human_name(name):
     return name.replace("_", " ").capitalize()
@@ -121,7 +121,7 @@ def main(mqtt_client):
         d.on_found = lambda d=d: on_found(d)
         
         def on_device_data(page: int, page_name: str, data, d=d):
-            logging.info("on_device_data: device=", d, "data: ", type(data))
+            #logging.info("on_device_data: device=", d, "data: ", type(data))
             if not(hasattr(d, 'topics')):
                 #logging.info(f"Device {d} has not been discovered yet we have data. Skipping.")
                 return
