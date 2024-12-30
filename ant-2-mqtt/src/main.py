@@ -172,7 +172,7 @@ if __name__ == "__main__":
     client_id = "ant2mqtt"
     
 
-    logging.info("About to connect to MQTT broker @ ", broker, "on port ", port, "with client_id ", client_id)
+    logging.info(f"About to connect to MQTT broker @ {broker}:{port} with client_id {client_id} as user {config['mqtt_user']}")
     try:
         client = mqtt.Client(client_id=client_id, callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
 
