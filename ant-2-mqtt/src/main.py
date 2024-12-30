@@ -151,7 +151,9 @@ def main(mqtt_client):
     except KeyboardInterrupt:
         logging.info("Closing ANT+ device...")
     finally:
+        logging.info("Closing ANT+ device...")
         for d in devices:
+            logging.info(f"Closing device {d}")
             d.close_channel()
         node.stop()
 
