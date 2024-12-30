@@ -112,7 +112,7 @@ def main(mqtt_client):
     devices.append(HeartRate(node))
 
     def on_found(device):
-        logging.info("Found device: ", device)
+        logging.info("Found ANT+ device")
         logging.info(" --> About to send autodiscovery")
         autodiscover_device(device, mqtt_client)
         
