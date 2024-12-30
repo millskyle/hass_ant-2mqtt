@@ -160,7 +160,7 @@ if __name__ == "__main__":
     import ssl
 
     # Define the MQTT broker details
-    broker = "192.168.0.100"  # Replace with your broker's address
+    broker = "localhost"  # Replace with your broker's address
     port = 1883  # Default MQTT port
     client_id = "bike_trainer"
     
@@ -173,7 +173,7 @@ if __name__ == "__main__":
 #)  # <--- even without arguments
 
 
-        #client.on_connect = lambda x: x
+        client.on_connect = lambda x: print("MQTT Connected")
         client.username_pw_set(username="mqtt", password="chuckle1")
         
         client.connect(broker, port, 60)
