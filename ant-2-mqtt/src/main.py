@@ -30,21 +30,38 @@ def autodiscover_device(device, mqtt_client):
     device.topics = {}
     
     if isinstance(device, PowerMeter):
-        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, "instantaneous_power", "W", device_class="power"))
-        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, "cadence", "rpm"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
+                                                   data_field="instantaneous_power",
+                                                   units="W", 
+                                                   device_class="power",
+                                                   value_template="{{ value | int }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
+                                                   data_field="cadence",
+                                                   units="rpm",
+                                                   value_template="{{ value | int }}"))
     elif isinstance(device, BikeSpeed):
-        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, "speed", "km/h", device_class="speed",
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
+                                                   data_field="speed", 
+                                                   units="km/h", 
+                                                   device_class="speed",
                                                    data_mapping_fn=calculate_speed))
     elif isinstance(device, BikeCadence):
-        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, "cadence", "rpm",
-                                                   data_mapping_fn=calculate_cadence))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
+                                                   data_field="cadence",
+                                                   units="rpm",
+                                                   data_mapping_fn=calculate_cadence,
+                                                   value_template="{{ value | int }}"))
     elif isinstance(device, HeartRate):
-        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, "heart_rate", "bpm"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
+                                                   data_field="heart_rate",
+                                                   units="bpm", 
+                                                   value_template="{{ value | int }}"))
 
     
 def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units,
                           device_model="unknown", device_manufacturer="unknown",
-                          device_class=None, data_mapping_fn=None):
+                          device_class=None, data_mapping_fn=None, 
+                          value_template="{{ value | float | round(1) }}"):
     discovery_topic = f"homeassistant/sensor/ant_{device_name}/{device_id}/config"
     logging.info(f"Publishing autodiscovery topic for {device_name} {data_field} to {discovery_topic}") 
     if data_mapping_fn is None:
@@ -59,7 +76,7 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
         "unique_id": f"ant_{device_name}_{device_id}_{data_field}",
         "state_topic": state_topic,
         "unit_of_measurement": f"{units}",
-        "value_template": "{{ value | float }}",
+        "value_template": value_template,
         "state_class": "measurement",
         "device": {
             "name": f"ANT+ {human_name(device_name)}",
@@ -137,12 +154,6 @@ def main(mqtt_client):
                 except:
                     pass
 
-                #if hasattr(data, datafield):
-                #    logging.info(f"--> Data field {datafield} found in data")
-                #    
-                #    #logging.info("Published", d.topics[datafield]["topic"], d.topics[datafield]["data_mapping_fn"](data))
-                #else:
-                #    logging.info(f"--> Data field {datafield} *not* found in data")
 
         d.on_device_data = on_device_data
         RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
