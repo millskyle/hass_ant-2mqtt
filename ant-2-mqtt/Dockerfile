@@ -21,7 +21,7 @@ RUN python3 -m ensurepip && \
 
 #RUN pipx install openant
 #RUN pip install paho-mqtt
-
+WORKDIR /
 # Copy add-on files
 COPY src ./src
 COPY run.sh ./run.sh
