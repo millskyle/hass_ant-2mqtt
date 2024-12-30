@@ -174,7 +174,7 @@ if __name__ == "__main__":
 
 
         #client.on_connect = lambda x: x
-        client.username_pw_set(username="kyle", password="chuckle1")
+        client.username_pw_set(username="mqtt", password="chuckle1")
         
         client.connect(broker, port, 60)
         # Start the loop in a separate thread to handle communication
