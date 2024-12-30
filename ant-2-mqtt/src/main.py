@@ -161,16 +161,20 @@ def main(mqtt_client):
 
 
 if __name__ == "__main__":
-
+    print("Starting")
     #read config from /data/options.json
     with open("/data/options.json") as f:
         config = json.load(f)
+
+    print("Done reading options from config")
 
     # Define the MQTT broker details
     broker = config["mqtt_broker"] # Replace with your broker's address
     port = config["mqtt_port"]  # Default MQTT port
     client_id = "ant2mqtt"
     
+
+    print("About to connect to MQTT broker @ ", broker, "on port ", port, "with client_id ", client_id)
     try:
         client = mqtt.Client(client_id=client_id, callback_api_version=mqtt.CallbackAPIVersion.VERSION2)
 
@@ -181,7 +185,7 @@ if __name__ == "__main__":
 
         def on_mqtt_connect(*args):
             print("Connected to MQTT")
-            mqtt_client.publish(discovery_topic, json.dumps(config_payload), retain=False)
+            client.publish('ant2mqtt/connected', 1)
 
 
         client.on_connect = on_mqtt_connect
@@ -190,7 +194,7 @@ if __name__ == "__main__":
         client.connect(broker, port, 60)
         # Start the loop in a separate thread to handle communication
         client.loop_start()    
-        
+        print("Connected to MQTT broker. About to start main loop") 
         main(client)
     except Exception as e:
         raise e
