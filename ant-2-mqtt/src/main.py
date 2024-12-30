@@ -107,7 +107,6 @@ def calculate_cadence(self):
             return 0
 
 
-RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
 
 def main(mqtt_client):
     
@@ -143,7 +142,8 @@ def main(mqtt_client):
                     logging.info(f"Data field {datafield} not found in data")
 
         d.on_device_data = on_device_data
-        d.open_channel(channel_type=RX_MODE)
+        RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
+        d.open_channel(extended=False, channel_type=RX_MODE)
     
     try:
         logging.info(f"Starting {devices}, press Ctrl-C to finish")

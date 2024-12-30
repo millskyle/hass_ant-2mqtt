@@ -1,6 +1,6 @@
 # https://developers.home-assistant.io/docs/add-ons/configuration#add-on-config
 name: ANT-2-MQTT
-version: "1.4.21"
+version: "1.4.22"
 slug: ant-2-mqtt
 description: Receive ANT+ fitness tracker messages and send them to MQTT for homeassistant ingestion
 url: "https://github.com/millskyle/hass_ant-2mqtt"
