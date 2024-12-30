@@ -148,6 +148,7 @@ def main(mqtt_client):
     try:
         logging.info(f"Starting {devices}, press Ctrl-C to finish")
         node.start()
+        logging.info("Started")
     except KeyboardInterrupt:
         logging.info("Closing ANT+ device...")
     finally:
