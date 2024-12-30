@@ -2,7 +2,6 @@
 name: ANT-2-MQTT
 version: "1.4.28"
 slug: ant-2-mqtt
-boot: auto
 description: Receive ANT+ fitness tracker messages and send them to MQTT for homeassistant ingestion
 url: "https://github.com/millskyle/hass_ant-2mqtt"
 usb: true
