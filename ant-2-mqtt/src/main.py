@@ -154,6 +154,10 @@ def main(mqtt_client):
             d.close_channel()
         node.stop()
 
+
+def on_mqtt_connect(*args):
+    print("Connected to MQTT")
+
 if __name__ == "__main__":
     import paho.mqtt.client as mqtt
     from paho.mqtt.client import CallbackAPIVersion
@@ -178,7 +182,7 @@ if __name__ == "__main__":
 #)  # <--- even without arguments
 
 
-        client.on_connect = lambda x: print("MQTT Connected")
+        client.on_connect = on_mqtt_connect
         client.username_pw_set(username=config["mqtt_user"], password=config["mqtt_password"])
         
         client.connect(broker, port, 60)
