@@ -17,6 +17,10 @@ import json
 import logging
 logging.basicConfig(level=logging.INFO)
 
+with open("/data/options.json") as f:
+    config = json.load(f)
+
+
 def human_name(name):
     return name.replace("_", " ").capitalize()
 
@@ -51,7 +55,7 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
     device_topic_dict = {data_field: {"topic": state_topic,
                                 "data_mapping_fn": data_mapping_fn}}
     config_payload = {
-        "name": f"Ant+ {human_name(device_name)} {human_name(data_field)}",
+        "name": f"{human_name(data_field)}",
         "unique_id": f"ant_{device_name}_{device_id}_{data_field}",
         "state_topic": state_topic,
         "unit_of_measurement": f"{units}",
@@ -74,7 +78,7 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
     return device_topic_dict
 
 
-def calculate_speed(self, wheel_circumference_m=2.180):
+def calculate_speed(self, wheel_circumference_m=config["wheel_circumference_m"]):
     delta_rev_count = (
         self.cumulative_speed_revolution[1] - self.cumulative_speed_revolution[0]
     )
@@ -159,8 +163,6 @@ def main(mqtt_client):
 if __name__ == "__main__":
     logging.info("Starting")
     #read config from /data/options.json
-    with open("/data/options.json") as f:
-        config = json.load(f)
 
     logging.info("Done reading options from config")
 

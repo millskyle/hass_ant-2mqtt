@@ -21,8 +21,10 @@ options:
   mqtt_port: 1883
   mqtt_user: "mqtt"
   mqtt_password: "mqtt"
+  wheel_circumference_m: 2.100
 schema:
   mqtt_broker: str
   mqtt_port: int
   mqtt_user: str
   mqtt_password: str
+  wheel_circumference_m: float
