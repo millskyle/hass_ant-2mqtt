@@ -13,10 +13,9 @@ from openant.devices.heart_rate import HeartRate, HeartRateData
 from openant.easy.channel import Channel
 import paho.mqtt.client as mqtt
 from paho.mqtt.client import CallbackAPIVersion
-import ssl
 import json
-import time
 import logging
+logging.basicConfig(level=logging.INFO)
 
 def human_name(name):
     return name.replace("_", " ").capitalize()
@@ -111,9 +110,7 @@ def calculate_cadence(self):
 RX_MODE = Channel.Type.UNIDIRECTIONAL_RECEIVE_ONLY
 
 def main(mqtt_client):
-    import logging
 
-    logging.basicConfig(level=logging.INFO)
     node = Node()
     node.set_network_key(0x00, ANTPLUS_NETWORK_KEY)
     devices = []
