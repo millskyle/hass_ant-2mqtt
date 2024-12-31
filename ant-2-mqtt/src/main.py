@@ -36,6 +36,11 @@ def autodiscover_device(device, mqtt_client):
                                                    device_class="power",
                                                    value_template="{{ value | int }}"))
         device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
+                                                   data_field="average_power",
+                                                   units="W", 
+                                                   device_class="power",
+                                                   value_template="{{ value | int }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
                                                    data_field="cadence",
                                                    units="rpm",
                                                    value_template="{{ value | int }}"))
@@ -150,7 +155,7 @@ def main(mqtt_client):
                 logging.info(f"-> Device {type(d)} should have datafield: {datafield}")
 
                 try:
-                    print(f"---> Device {type(d)} has datafield {datafield}")
+                    logging.info(f"---> Device {type(d)} has datafield {datafield}")
                     value = d.topics[datafield]["data_mapping_fn"](data)
                     mqtt_client.publish(d.topics[datafield]["topic"], value)
 
