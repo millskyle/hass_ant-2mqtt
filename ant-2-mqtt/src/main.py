@@ -62,7 +62,7 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
                           device_model="unknown", device_manufacturer="unknown",
                           device_class=None, data_mapping_fn=None, 
                           value_template="{{ value | float | round(1) }}"):
-    discovery_topic = f"homeassistant/sensor/ant_{device_name}/{device_id}/config"
+    discovery_topic = f"homeassistant/sensor/ant_{device_name}/{device_id}_{data_field}/config"
     logging.info(f"Publishing autodiscovery topic for {device_name} {data_field} to {discovery_topic}") 
     if data_mapping_fn is None:
         #If no custom mapping function, just look up the data field
@@ -148,10 +148,14 @@ def main(mqtt_client):
                 return
             for datafield in d.topics:
                 logging.info(f"-> Device {type(d)} should have datafield: {datafield}")
+
                 try:
+                    print(f"---> Device {type(d)} has datafield {datafield}")
                     value = d.topics[datafield]["data_mapping_fn"](data)
                     mqtt_client.publish(d.topics[datafield]["topic"], value)
-                except:
+
+                except Exception as e:
+
                     pass
 
 
