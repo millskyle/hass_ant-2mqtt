@@ -7,12 +7,11 @@ Refer to subparsers/influx for another example of creating multiple devices at r
 """
 from openant.easy.node import Node
 from openant.devices import ANTPLUS_NETWORK_KEY
-from openant.devices.power_meter import PowerMeter, PowerData
-from openant.devices.bike_speed_cadence import BikeSpeed, BikeCadence, BikeSpeedData, BikeCadenceData
-from openant.devices.heart_rate import HeartRate, HeartRateData
+from openant.devices.power_meter import PowerMeter
+from openant.devices.bike_speed_cadence import BikeSpeed, BikeCadence
+from openant.devices.heart_rate import HeartRate
 from openant.easy.channel import Channel
 import paho.mqtt.client as mqtt
-from paho.mqtt.client import CallbackAPIVersion
 import json
 import logging
 logging.basicConfig(level=logging.INFO)
