@@ -56,6 +56,23 @@ def autodiscover_device(device, mqtt_client):
                                                    units="rpm",
                                                    data_mapping_fn=calculate_cadence,
                                                    value_template="{{ value | int }}"))
+    elif isinstance(device, FitnessEquipment):
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name,
+                                                   data_field="resistance",
+                                                   units="%",
+                                                   value_template="{{ value | float }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name,
+                                                    data_field="incline",
+                                                    units="%",
+                                                    value_template="{{ value | float }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name,
+                                                    data_field="speed",
+                                                    units="km/h",
+                                                    value_template="{{ value | float }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name,
+                                                    data_field="target_resistance",
+                                                    units="%",
+                                                    value_template="{{ value | float }}"))
     elif isinstance(device, HeartRate):
         device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
                                                    data_field="heart_rate",
