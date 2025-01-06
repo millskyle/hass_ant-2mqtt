@@ -133,8 +133,8 @@ def main(mqtt_client):
 
     #Add devices here that we should watch for
     devices.append(PowerMeter(node))
-    devices.append(BikeCadence(node))
-    devices.append(BikeSpeed(node))
+    #devices.append(BikeCadence(node))
+    #devices.append(BikeSpeed(node))
     devices.append(HeartRate(node))
     devices.append(FitnessEquipment(node))
 
