@@ -95,7 +95,7 @@ def publish_autodiscovery(mqtt_client, device_id, device_name, data_field, units
     }
     if device_class:
         config_payload["device_class"] = device_class
-    mqtt_client.publish(discovery_topic, json.dumps(config_payload), retain=False)
+    mqtt_client.publish(discovery_topic, json.dumps(config_payload), retain=True)
     return device_topic_dict
 
 
