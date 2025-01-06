@@ -73,6 +73,17 @@ def autodiscover_device(device, mqtt_client):
                                                     data_field="target_resistance",
                                                     units="%",
                                                     value_template="{{ (value | float) / 255.0 }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name,
+                                                    data_field="instantaneous_power",
+                                                    units="W",
+                                                    data_mapping_fn=lambda data: data["power"].instantaneous_power,
+                                                    value_template="{{ value | int }}"))
+        device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name,
+                                                    data_field="cadence",
+                                                    units="rpm",
+                                                    data_mapping_fn=lambda data: data["power"].cadence,
+                                                    value_template="{{ value | int }}"))
+        
     elif isinstance(device, HeartRate):
         device.topics.update(publish_autodiscovery(mqtt_client, device_id, device_name, 
                                                    data_field="heart_rate",
