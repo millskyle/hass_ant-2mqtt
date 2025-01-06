@@ -10,6 +10,7 @@ from openant.devices import ANTPLUS_NETWORK_KEY
 from openant.devices.power_meter import PowerMeter
 from openant.devices.bike_speed_cadence import BikeSpeed, BikeCadence
 from openant.devices.heart_rate import HeartRate
+from openant.devices.fitness_equipment import FitnessEquipment
 from openant.easy.channel import Channel
 import paho.mqtt.client as mqtt
 import json
@@ -135,6 +136,7 @@ def main(mqtt_client):
     devices.append(BikeCadence(node))
     devices.append(BikeSpeed(node))
     devices.append(HeartRate(node))
+    devices.append(FitnessEquipment(node))
 
     def on_found(device):
         logging.info("Found ANT+ device")
