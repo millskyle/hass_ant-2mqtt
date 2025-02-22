@@ -1,0 +1,13 @@
+services:
+  ant2mqtt:
+    image: ant2mqtt/ant2mqtt
+    build: 
+      context: ./ant-2-mqtt
+      dockerfile: standalone.Dockerfile
+      args:
+        BUILD_FROM: python:3.9
+
+    devices:
+      - /dev/bus/usb:/dev/bus/usb
+    volumes:
+      - ./standalone_options.yaml:/config.yaml:ro

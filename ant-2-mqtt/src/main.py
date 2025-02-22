@@ -17,9 +17,32 @@ import json
 import logging
 logging.basicConfig(level=logging.INFO)
 
-with open("/data/options.json") as f:
-    config = json.load(f)
+import os
 
+HOME_ASSISTANT_OPTIONS_FILE="/data/options.json"
+STANDALONE_OPTIONS_FILE="/config.yaml"
+
+
+if os.path.isfile(HOME_ASSISTANT_OPTIONS_FILE):
+    try:
+        with open(HOME_ASSISTANT_OPTIONS_FILE) as f:
+            config = json.load(f)
+    except Exception as e:
+        print(f"Error loading HomeAssistant config file {HOME_ASSISTANT_OPTIONS_FILE}")
+        raise e
+
+elif os.path.isfile(STANDALONE_OPTIONS_FILE):
+    try:
+        import yaml
+        with open(STANDALONE_OPTIONS_FILE) as f:
+            config = yaml.safe_load(f)
+    except Exception as e:
+        print(f"Error loading config file {STANDALONE_OPTIONS_FILE}")
+        raise e
+print("-----------------------------")
+print("Config loaded:")
+print(config)
+print("-----------------------------")
 
 def human_name(name):
     return name.replace("_", " ").capitalize()
